@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"log"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
-	"xorm.io/xorm"
 	"github.com/joho/godotenv"
+	"xorm.io/xorm"
 )
 
 type User struct {
@@ -18,11 +18,10 @@ type User struct {
 
 var (
 	PASSWORD string
-	USER string
-	ADDRESS string
-	DB string
+	USER     string
+	ADDRESS  string
+	DB       string
 )
-
 
 func init() {
 	err := godotenv.Load(".env")
@@ -72,7 +71,7 @@ func get(engine xorm.Engine) {
 }
 
 func main() {
-	
+
 	//engineを作成します。
 	st := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?charset=utf8mb4&parseTime=true", USER, PASSWORD, ADDRESS, DB)
 	// fmt.Println(st)
