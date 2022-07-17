@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  hureru_button:
+    image: node:alpine3.16
+    restart: always
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    volumes:
+      - ./:/usr/src/app
+    command: sh -c 'cd hureru_button && yarn start'
+    ports:
+      - '3000:3000'
+    tty: true
