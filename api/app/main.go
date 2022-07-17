@@ -88,6 +88,5 @@ func main() {
 	//テーブルから取得する
 	get(*engine)
 
-
 	fmt.Println("うまく動きました。")
 }
