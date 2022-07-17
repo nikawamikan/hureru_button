@@ -7,8 +7,10 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
     volumes:
-      - ./:/usr/src/app
-    command: sh -c 'cd hureru_button && yarn start'
+      - type: bind
+        source: ./voice
+        target: /data/voice
+    command: sh -c 'cat /data/voice/test.txt'
     ports:
       - '3000:3000'
     tty: true
