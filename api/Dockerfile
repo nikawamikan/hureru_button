@@ -1,4 +1,4 @@
-FROM golang:1.18-rc-alpine3.15
+FROM arm64v8/golang:1.18-rc-alpine3.15
 
 ENV ROOT=/go/src/app
 WORKDIR ${ROOT}
