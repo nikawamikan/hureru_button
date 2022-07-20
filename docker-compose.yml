@@ -29,11 +29,14 @@ services:
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # .env
+      - ADDRESS_BASE=${ADDRESS_BASE}
     volumes:
       - ./api/app:/go/src/app
+      - ./voice:/go/src/app/voice
     tty: true
     ports:
       - 7001:80
+    command: go run main.go
 
 # DBさん
   hureru_button_db:

@@ -1,13 +1,17 @@
-package dblink
+/*
+DB管理用パッケージ
+あんまり使い方わかってない模様
+UNIQUE制約とかが機能してない気がする
+*/
+
+package db
 
 import (
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	// "github.com/gorilla/mux"
 	"xorm.io/xorm"
 )
 
@@ -22,7 +26,7 @@ type Voice struct {
 
 type Attr struct {
 	ID       uint      `xorm:"id pk autoincr"` // ID
-	VoiceID  uint      `xorm:"voice_id"`       // 音声のID
+	VoiceID  uint64    `xorm:"voice_id"`       // 音声のID
 	TypeID   uint      `xorm:"type_id"`        // 属性のID
 	DelFlg   bool      `xorm:"del_flg"`        // 削除フラグ
 	UpdateAt time.Time `xorm:"updated"`        // 日時
@@ -41,13 +45,6 @@ type LastUpdate struct {
 	UpdateAt time.Time `xorm:"created"`          // 最終更新日
 }
 
-type VoiceJson struct {
-	Name      string
-	Read      string
-	Address   string
-	AttrTypes []string
-}
-
 // 初期化用
 var (
 	PASSWORD string
@@ -56,6 +53,20 @@ var (
 	DB       string
 	ENGINE   xorm.Engine
 )
+
+// DB接続に必要な変数を初期化します
+func SetInit(password string, user string, address string, db string) {
+	PASSWORD = password
+	USER = user
+	ADDRESS = address
+	DB = db
+
+	engine := getEngine()
+
+	allDropTables(*engine)
+	createTable(*engine)
+	insert(*engine)
+}
 
 // createTable テーブルを作成する
 func createTable(engine xorm.Engine) {
@@ -74,7 +85,6 @@ func createTable(engine xorm.Engine) {
 }
 
 func allDropTables(engine xorm.Engine) {
-
 	type table struct {
 		Tables_in_hureru_voice string
 	}
@@ -83,100 +93,40 @@ func allDropTables(engine xorm.Engine) {
 	if err != nil {
 		fmt.Printf("err%v", err)
 	}
-
 	for _, table := range l {
 		_, err := engine.Exec(fmt.Sprintf("drop table %s", table.Tables_in_hureru_voice))
 		if err != nil {
 			log.Fatalf("テーブル削除に失敗: %v", err)
 		}
-		fmt.Printf("成功です: %s\n", table.Tables_in_hureru_voice)
+		fmt.Printf("%s : DROP TABLE\n", table.Tables_in_hureru_voice)
 	}
 }
 
-// insert テーブルにレコードを追加する
-func insert(engine xorm.Engine) {
-	attrTypes := make([]AttrType, 0)
-	voices := make([]Voice, 0)
-	attrs := make([]Attr, 0)
-
-	for i := 0; i < 10; i++ {
-		n := AttrType{
-			Name: fmt.Sprintf("type:%d", 1),
-		}
-		attrTypes = append(attrTypes, n)
-	}
-
-	for j := 0; j < 1000; j++ {
-		voices = append(voices, Voice{Name: fmt.Sprintf("name: %d", j), Read: fmt.Sprintf("read: %d", j), Address: fmt.Sprintf("address: %d", j)})
-		for k := 0; k < 3; k++ {
-			attrs = append(attrs, Attr{VoiceID: uint(j + 1), TypeID: uint((j+k)%len(attrTypes) + 1)})
-		}
-	}
-
-	r, err := engine.Table("attr_type").Insert(attrTypes)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(r)
-
-	_, err2 := engine.Table("attr").Insert(attrs)
-	if err != nil {
-		log.Fatal(err2)
-	}
-
-	result, err3 := engine.Table("voice").Insert(voices)
-	if err != nil {
-		log.Fatal(err3)
-	}
-	fmt.Println(result)
-
-	fmt.Println("レコードの追加が完了しました。")
-}
-
-// get 単体取得(1レコードを取得)
-func get(engine xorm.Engine) {
+func GetAttrTypes() []AttrType {
 	attrTypes := []AttrType{}
-	err := getEngine().Find(&attrTypes)
+	err := getEngine().Find(&attrTypes, &AttrType{DelFlg: false})
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("取得したレコード :%+v\n", attrTypes)
+	return attrTypes
 }
 
-func init() {
-	PASSWORD = os.Getenv("MYSQL_ROOT_PASSWORD")
-	USER = "root"
-	ADDRESS = "hureru_button_db"
-	DB = "hureru_voice"
-
-	engine := getEngine()
-
-	allDropTables(*engine)
-	createTable(*engine)
-	insert(*engine)
-}
-
-func FindAttr() {
-	attrTypes := []AttrType{}
-	err := getEngine().Find(&attrTypes)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("取得したレコード :%+v\n", attrTypes)
-
-	attrs := []Attr{}
-	err1 := getEngine().Find(&attrs)
-	if err != nil {
-		log.Fatal(err1)
-	}
-	fmt.Printf("取得したレコード :%+v\n", attrs)
-
+func GetVoices() []Voice {
 	voices := []Voice{}
-	err2 := getEngine().Find(&voices)
+	err := getEngine().Find(&voices, &Voice{DelFlg: false})
 	if err != nil {
-		log.Fatal(err2)
+		log.Fatal(err)
 	}
-	fmt.Printf("取得したレコード :%+v\n", voices)
+	return voices
+}
+
+func GetAttrs() []Attr {
+	attrs := []Attr{}
+	err := getEngine().Find(&attrs, &Attr{DelFlg: false})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return attrs
 }
 
 func getEngine() *xorm.Engine {
