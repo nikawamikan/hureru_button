@@ -24,6 +24,8 @@ services:
     depends_on:
     - hureru_button_db
     restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./api/app:/go/src/app
     tty: true
