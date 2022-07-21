@@ -8,17 +8,18 @@ services:
 
 # フロントエンドさん
   hureru_button:
-    image: node:16.16.0-alpine3.16
-    # image: arm64v8/node:16.16.0-alpine3.16
+    # image: node:16.16.0-alpine3.16
+    image: arm64v8/node:16.16.0-alpine3.16
     restart: always
+    user: node
     environment:
       - NODE_ENV=${NODE_ENV}
     volumes:
       - ./frontend:/usr/src/app
     working_dir: /usr/src/app
-    command: sh -c 'yarn start'
+    # command: sh -c 'yarn start'
     ports:
-      - '7000:3000'
+      - '8000:3000'
     tty: true
 
 # APIさん
@@ -34,8 +35,6 @@ services:
       - ./api/app:/go/src/app
       - ./voice:/go/src/app/voice
     tty: true
-    ports:
-      - 7001:80
     command: go run main.go
 
 # DBさん
@@ -58,6 +57,7 @@ services:
 # リバースプロキシさん
   reverse-proxy:
     image: nginx
+    restart: always
     volumes:
       - ./rev/nginx.conf:/etc/nginx/nginx.conf
     ports:
