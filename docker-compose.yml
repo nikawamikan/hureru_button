@@ -17,9 +17,7 @@ services:
     volumes:
       - ./frontend:/usr/src/app
     working_dir: /usr/src/app
-    # command: sh -c 'yarn start'
-    ports:
-      - '8000:3000'
+    command: sh -c 'yarn start'
     tty: true
 
 # APIさん
@@ -51,8 +49,6 @@ services:
     command: >
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_general_ci
-    ports:
-      - 9700:3306
 
 # リバースプロキシさん
   reverse-proxy:
