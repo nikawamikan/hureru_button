@@ -10,6 +10,7 @@ services:
   hureru_button:
     # image: node:16.16.0-alpine3.16
     image: arm64v8/node:16.16.0-alpine3.16
+    user: node
     restart: always
     user: node
     environment:
