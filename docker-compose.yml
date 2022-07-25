@@ -9,13 +9,13 @@ services:
 # フロントエンドさん
   hureru_button:
     image: node:16.16.0-alpine3.16
-    user: ${NODE_USER}
+    # user: ${NODE_USER}
     restart: always
     environment:
       - NODE_ENV=${NODE_ENV}
     volumes:
-      - ./frontend:/usr/src/app
-    working_dir: /usr/src/app
+      - ./frontend:/home/node/app
+    working_dir: /home/node/app
     command: sh -c 'yarn start'
     tty: true
 
