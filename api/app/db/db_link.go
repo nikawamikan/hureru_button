@@ -63,9 +63,14 @@ func SetInit(password string, user string, address string, db string) {
 
 	engine := getEngine()
 
-	allDropTables(*engine)
+	// 存在するテーブルすべて削除する
+	// allDropTables(*engine)
+
+	// テーブルの作成
 	createTable(*engine)
-	insert(*engine)
+
+	// テスト用データの挿入
+	// insert(*engine)
 }
 
 // createTable テーブルを作成する

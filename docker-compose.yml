@@ -57,3 +57,12 @@ services:
       - ./rev/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
+
+# とりあえず入れる音楽データを加工するようコンテナ
+  # voiceinserter:
+  #   build: ./voiceinserter
+  #   volumes:
+  #     - ./voice:/usr/src/app/voice
+  #     - ./voiceinserter/src:/usr/src/app
+  #   # command: python3 main.py
+  #   tty: true
