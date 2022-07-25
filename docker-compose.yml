@@ -9,9 +9,8 @@ services:
 # フロントエンドさん
   hureru_button:
     image: node:16.16.0-alpine3.16
-    user: node
-    restart: always
     user: ${NODE_USER}
+    restart: always
     environment:
       - NODE_ENV=${NODE_ENV}
     volumes:
