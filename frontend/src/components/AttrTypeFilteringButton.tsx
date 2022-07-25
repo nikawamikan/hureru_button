@@ -7,7 +7,7 @@ type Props = {
 
 function AttrTypeFilteringButton(props: Props) {
     return (
-        <button onClick={props.onclick}>{props.label}</button>
+        <button className='btn btn-attr mb-1 me-1' data-bs-toggle='button' onClick={props.onclick}>{props.label}</button>
     );
 }
 

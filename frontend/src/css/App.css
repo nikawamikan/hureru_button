@@ -1,38 +1,105 @@
-.App {
-  text-align: center;
+:root {
+  --cafe-noir: #573c27ff;
+  --cafe-au-lait: #a98360ff;
+  --antique-white: #fdeed9ff;
+  --nadeshiko-pink: #f999baff;
+  --nadefan-pink: #f17ba8ff;
+  --fandango-pink: #e34989ff;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* .bg-antique-white */
+.bg-antique-white {
+  background-color: var(--antique-white) !important;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* btn-attr */
+.btn-attr {
+  color: #fff;
+  background-color: var(--nadeshiko-pink);
+  border-color: var(--nadeshiko-pink);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.btn-attr:hover {
+  color: #fff;
+  background-color: var(--nadefan-pink);
+  border-color: var(--nadefan-pink);
 }
 
-.App-link {
-  color: #61dafb;
+.btn-check:focus+.btn-attr,
+.btn-attr:focus {
+  color: #fff;
+  background-color: var(--nadefan-pink);
+  border-color: var(--nadefan-pink);
+  box-shadow: 0 0 0 0.2rem var(--nadeshiko-pink);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btn-check:checked+.btn-attr,
+.btn-check:active+.btn-attr,
+.btn-attr:active,
+.btn-attr.active,
+.show>.btn-attr.dropdown-toggle {
+  color: #fff;
+  background-color: var(--fandango-pink);
+  border-color: var(--fandango-pink);
+}
+
+.btn-check:checked+.btn-attr:focus,
+.btn-check:active+.btn-attr:focus,
+.btn-attr:active:focus,
+.btn-attr.active:focus,
+.show>.btn-attr.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem var(--nadeshiko-pink);
+}
+
+.btn-attr:disabled,
+.btn-attr.disabled {
+  color: #fff;
+  background-color: var(--nadeshiko-pink);
+  border-color: var(--nadeshiko-pink);
+}
+
+/* btn-voice */
+.btn-voice {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-voice:hover {
+  color: #fff;
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+.btn-check:focus+.btn-voice,
+.btn-voice:focus {
+  color: #fff;
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+}
+
+.btn-check:checked+.btn-voice,
+.btn-check:active+.btn-voice,
+.btn-voice:active,
+.btn-voice.active,
+.show>.btn-voice.dropdown-toggle {
+  color: #fff;
+  background-color: #0a58ca;
+  border-color: #0a53be;
+}
+
+.btn-check:checked+.btn-voice:focus,
+.btn-check:active+.btn-voice:focus,
+.btn-voice:active:focus,
+.btn-voice.active:focus,
+.show>.btn-voice.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+}
+
+.btn-voice:disabled,
+.btn-voice.disabled {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
 }

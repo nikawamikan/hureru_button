@@ -2,14 +2,13 @@ import React from 'react';
 
 type Props = {
     onchange: React.ChangeEventHandler<HTMLInputElement>,
-    onclick: React.MouseEventHandler<HTMLButtonElement>
 };
 
 function WordFiltering(props: Props) {
     return (
-        <div>
-            <input type='text' id='filteringWord' onChange={(e) => { props.onchange(e) }}></input>
-            <button onClick={props.onclick}>検索</button>
+        <div className='input-group mb-2'>
+            <span className='input-group-text'>ボタン名／読み 検索</span>
+            <input type='text' id='filteringWord' className='border' placeholder='検索ワード' onChange={(e) => { props.onchange(e) }}></input>
         </div>
     );
 }

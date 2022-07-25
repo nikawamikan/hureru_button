@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import AppState from '../types/AppState';
 import Voice from '../types/Voice';
 import WordFiltering from './WordFiltering';
-import AttrTypeFilteringButton from './AttrTypeFilteringButton';
-import VoiceAudio from './VoiceAudio';
-
-import logo from './logo.svg';
-import '../css/App.css';
-import VoiceButton from './VoiceButton';
 import AttrTypeFiltering from './AttrTypeFiltering';
+import VoiceAudio from './VoiceAudio';
+import VoiceButton from './VoiceButton';
+
+import '../css/App.css';
 
 // 初期データ（音声ファイルのアドレス要修正）
 const _voices: Voice[] = [
@@ -66,13 +64,11 @@ function App() {
     setSelectedVoice(voice);
   }
   function handleWordFilteringInputChange(word: string) {
-    const filteringWords = word.replace(/\s+/, ' ').trim().split(' ');
-    setFilteringWords(filteringWords);
-  }
-  function handleWordFilteringButtonClick() {
+    const newFilteringWords = word.replace(/\s+/, ' ').trim().split(' ');
+    setFilteringWords(newFilteringWords);
     filterVoiceList(
-      filteringWords.slice(),
-      filteringAttrIds
+      newFilteringWords,
+      filteringAttrIds.slice()
     );
   }
   function handleAttrTypeFilteringButtonClick(attrId: number) {
@@ -122,10 +118,9 @@ function App() {
 
   // render
   return (
-    <div>
+    <div className='container p-4'>
       <WordFiltering
         onchange={(e) => handleWordFilteringInputChange(e.target.value)}
-        onclick={() => handleWordFilteringButtonClick()}
       />
       <AttrTypeFiltering
         attrTypes={attrTypes}

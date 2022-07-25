@@ -9,7 +9,7 @@ type Props = {
 function VoiceAudio(props: Props) {
     const address = props.baseAddress + props.voice.address;
     return (
-        <div>
+        <div className='mb-2'>
             <audio src={address} autoPlay controls></audio>
         </div>
     );
