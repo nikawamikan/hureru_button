@@ -10,7 +10,7 @@ type Props = {
 function AttrTypeFiltering(props: Props) {
     const attrTypes = props.attrTypes.slice();
     return (
-        <div>
+        <div className='mb-2'>
             {attrTypes.map((attrType) => {
                 return (
                     <AttrTypeFilteringButton onclick={() => props.onclick(attrType.id)} label={attrType.name} />
