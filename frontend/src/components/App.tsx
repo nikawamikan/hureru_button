@@ -66,13 +66,11 @@ function App() {
     setSelectedVoice(voice);
   }
   function handleWordFilteringInputChange(word: string) {
-    const filteringWords = word.replace(/\s+/, ' ').trim().split(' ');
-    setFilteringWords(filteringWords);
-  }
-  function handleWordFilteringButtonClick() {
+    const newFilteringWords = word.replace(/\s+/, ' ').trim().split(' ');
+    setFilteringWords(newFilteringWords);
     filterVoiceList(
-      filteringWords.slice(),
-      filteringAttrIds
+      newFilteringWords,
+      filteringAttrIds.slice()
     );
   }
   function handleAttrTypeFilteringButtonClick(attrId: number) {
@@ -125,7 +123,6 @@ function App() {
     <div>
       <WordFiltering
         onchange={(e) => handleWordFilteringInputChange(e.target.value)}
-        onclick={() => handleWordFilteringButtonClick()}
       />
       <AttrTypeFiltering
         attrTypes={attrTypes}
