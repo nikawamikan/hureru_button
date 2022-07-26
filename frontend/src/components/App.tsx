@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppState from '../types/AppState';
 import Voice from '../types/Voice';
 import WordFiltering from './WordFiltering';
@@ -7,6 +7,7 @@ import VoiceAudio from './VoiceAudio';
 import VoiceButton from './VoiceButton';
 
 import '../css/App.css';
+import axios from 'axios';
 
 // 初期データ（音声ファイルのアドレス要修正）
 const _voices: Voice[] = [
@@ -140,8 +141,66 @@ function App() {
           );
         })}
       </div>
+      <AxiosSample />
     </div>
   );
 }
+
+type ApiResponseType = {
+  message: string,
+  results: {
+    address1: string,
+    address2: string,
+    address3: string,
+    kana1: string,
+    kana2: string,
+    kana3: string,
+    prefcode: string,
+    zipcode: string
+  }[],
+  status: number
+} | null;
+
+function AxiosSample() {
+  const [result, setResult] = useState<ApiResponseType>(null);
+
+  useEffect(() => {
+    const target = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=0620911'
+    axios.get(target).then((response) => {
+      setResult(response.data);
+    });
+  }, []);
+
+  return (
+    <div>
+      <p>Axios Sample</p>
+      <span>fetching result</span><br />
+      {
+        result ?
+          <div>
+            {result.results.map((r, i) => {
+              return (
+                <div>
+                  <span>result[{i + 1}]: </span><br />
+                  ---<span>address1: {r.address1}</span><br />
+                  ---<span>address2: {r.address2}</span><br />
+                  ---<span>address3: {r.address3}</span><br />
+                  ---<span>kana1: {r.kana1}</span><br />
+                  ---<span>kana2: {r.kana2}</span><br />
+                  ---<span>kana3: {r.kana3}</span><br />
+                  ---<span>prefcode: {r.prefcode}</span><br />
+                  ---<span>zipcode: {r.zipcode}</span><br />
+                </div>
+              );
+            })}
+          </div> :
+          'loading...'
+      }
+    </div>
+  );
+
+}
+
+
 
 export default App;
