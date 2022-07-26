@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import VoiceListApiResponse from '../types/VoiceListApiResponse';
 import AppState from '../types/AppState';
 import Voice from '../types/Voice';
+import AttrType from '../types/AttrType';
 import WordFiltering from './WordFiltering';
 import AttrTypeFiltering from './AttrTypeFiltering';
 import VoiceAudio from './VoiceAudio';
@@ -116,6 +119,27 @@ function App() {
     setFilteredVoices(newFilteredVoices);
   }
 
+  useEffect(() => {
+    // fetchVoiceList
+    const target = 'http://localhost/hurerubutton/api/voicelist';
+    axios.get(target)
+      .then((response) => {
+        const fetchedVoiceList: VoiceListApiResponse = response.data;
+        const appState = mapToAppState(fetchedVoiceList);
+        setBaseAddress(appState.baseAddress);
+        setAttrTypes(appState.attrTypes);
+        setVoices(appState.voices);
+        setFilteredVoices(appState.voices);
+        setSelectedVoice({ address: '', attrIds: [], name: '', kana: '' });
+        setFilteringWords([]);
+        setFilteringAttrIds([]);
+      })
+      .catch((error) => {
+        console.log('*** ボイスデータの読み込み中にエラー発生 ***');
+        console.log(error);
+      });
+  }, []);
+
   // render
   return (
     <div className='container p-4'>
@@ -142,6 +166,56 @@ function App() {
       </div>
     </div>
   );
+}
+
+function mapToAppState(res: VoiceListApiResponse) {
+  const appState: AppState = {
+    baseAddress: res.prefix,
+    attrTypes: mapToAttrTypes(res.attrType),
+    voices: mapToVoices(res.voices),
+    filteredVoices: mapToVoices(res.voices),
+    selectedVoice: {
+      address: '',
+      attrIds: [],
+      name: '',
+      kana: ''
+    },
+    filteringWords: [],
+    filteringAttrIds: [],
+  };
+
+  return appState;
+}
+
+function mapToAttrTypes(resAttrType: { [key: string]: string }) {
+  const attrTypes: AttrType[] = [];
+  for (const property in resAttrType) {
+    try {
+      const id = Number(property);
+      const name = resAttrType[property];
+      const attrType: AttrType = {
+        id: id,
+        name: name,
+      };
+      attrTypes.push(attrType);
+    } catch {
+      continue;
+    }
+  }
+  return attrTypes;
+}
+
+function mapToVoices(resVoices: { name: string, read: string, address: string, attrIds: number[] }[]) {
+  const voices: Voice[] = resVoices.map((resVoice) => {
+    const voice: Voice = {
+      address: resVoice.address,
+      attrIds: resVoice.attrIds,
+      name: resVoice.name,
+      kana: resVoice.read,
+    };
+    return voice;
+  });
+  return voices;
 }
 
 export default App;
