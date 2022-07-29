@@ -25,8 +25,8 @@ type VoiceJson struct {
 }
 
 type AttrTypeJson struct {
-	Id   uint   `json:id`
-	Name string `json:name`
+	Id   uint   `json:"id"`
+	Name string `json:"name"`
 }
 
 type VoiceListJson struct {
