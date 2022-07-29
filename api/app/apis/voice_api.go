@@ -24,10 +24,15 @@ type VoiceJson struct {
 	AttrIds []uint `json:"attrIds"`
 }
 
+type AttrTypeJson struct {
+	Id   uint   `json:"id"`
+	Name string `json:"name"`
+}
+
 type VoiceListJson struct {
-	Prefix    string          `json:"prefix"`
-	AttrTypes map[uint]string `json:"attrType"`
-	Voices    []VoiceJson     `json:"voices"`
+	Prefix    string         `json:"prefix"`
+	AttrTypes []AttrTypeJson `json:"attrType"`
+	Voices    []VoiceJson    `json:"voices"`
 }
 
 func SetApis(e echo.Echo) {
@@ -46,13 +51,13 @@ func getVoice(c echo.Context) error {
 }
 
 func voiceListBuilder() VoiceListJson {
-	getAttrsMap := func() map[uint]string {
+	getAttrsMap := func() []AttrTypeJson {
 		attrTypes := db.GetAttrTypes()
-		attrsMap := make(map[uint]string)
+		attrTypeJson := []AttrTypeJson{}
 		for _, obj := range attrTypes {
-			attrsMap[obj.ID] = obj.Name
+			attrTypeJson = append(attrTypeJson, AttrTypeJson{obj.ID, obj.Name})
 		}
-		return attrsMap
+		return attrTypeJson
 	}
 	getVoiceList := func() []VoiceJson {
 		voices := db.GetVoices()
