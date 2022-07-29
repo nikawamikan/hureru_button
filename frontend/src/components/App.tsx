@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import VoiceListApiResponse from '../types/VoiceListApiResponse';
 import AppState from '../types/AppState';
 import Voice from '../types/Voice';
+import AttrType from '../types/AttrType';
 import WordFiltering from './WordFiltering';
 import AttrTypeFiltering from './AttrTypeFiltering';
 import VoiceAudio from './VoiceAudio';
 import VoiceButton from './VoiceButton';
 
 import '../css/App.css';
-import axios from 'axios';
 
 // 初期データ（音声ファイルのアドレス要修正）
 const _voices: Voice[] = [
@@ -117,6 +119,27 @@ function App() {
     setFilteredVoices(newFilteredVoices);
   }
 
+  useEffect(() => {
+    // fetchVoiceList
+    const target = '/hurerubutton/api/voicelist';
+    axios.get(target)
+      .then((response) => {
+        const fetchedVoiceList: VoiceListApiResponse = response.data;
+        const appState = mapToAppState(fetchedVoiceList);
+        setBaseAddress(appState.baseAddress);
+        setAttrTypes(appState.attrTypes);
+        setVoices(appState.voices);
+        setFilteredVoices(appState.voices);
+        setSelectedVoice({ address: '', attrIds: [], name: '', kana: '' });
+        setFilteringWords([]);
+        setFilteringAttrIds([]);
+      })
+      .catch((error) => {
+        console.log('*** ボイスデータの読み込み中にエラー発生 ***');
+        console.log(error);
+      });
+  }, []);
+
   // render
   return (
     <div className='container p-4'>
@@ -141,66 +164,49 @@ function App() {
           );
         })}
       </div>
-      <AxiosSample />
     </div>
   );
 }
 
-type ApiResponseType = {
-  message: string,
-  results: {
-    address1: string,
-    address2: string,
-    address3: string,
-    kana1: string,
-    kana2: string,
-    kana3: string,
-    prefcode: string,
-    zipcode: string
-  }[],
-  status: number
-} | null;
+function mapToAppState(res: VoiceListApiResponse) {
+  const appState: AppState = {
+    baseAddress: res.prefix,
+    attrTypes: mapToAttrTypes(res.attrType),
+    voices: mapToVoices(res.voices),
+    filteredVoices: mapToVoices(res.voices),
+    selectedVoice: {
+      address: '',
+      attrIds: [],
+      name: '',
+      kana: ''
+    },
+    filteringWords: [],
+    filteringAttrIds: [],
+  };
 
-function AxiosSample() {
-  const [result, setResult] = useState<ApiResponseType>(null);
-
-  useEffect(() => {
-    const target = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=0620911'
-    axios.get(target).then((response) => {
-      setResult(response.data);
-    });
-  }, []);
-
-  return (
-    <div>
-      <p>Axios Sample</p>
-      <span>fetching result</span><br />
-      {
-        result ?
-          <div>
-            {result.results.map((r, i) => {
-              return (
-                <div>
-                  <span>result[{i + 1}]: </span><br />
-                  ---<span>address1: {r.address1}</span><br />
-                  ---<span>address2: {r.address2}</span><br />
-                  ---<span>address3: {r.address3}</span><br />
-                  ---<span>kana1: {r.kana1}</span><br />
-                  ---<span>kana2: {r.kana2}</span><br />
-                  ---<span>kana3: {r.kana3}</span><br />
-                  ---<span>prefcode: {r.prefcode}</span><br />
-                  ---<span>zipcode: {r.zipcode}</span><br />
-                </div>
-              );
-            })}
-          </div> :
-          'loading...'
-      }
-    </div>
-  );
-
+  return appState;
 }
 
+function mapToAttrTypes(resAttrType: { id: number, name: string }[]) {
+  const attrTypes: AttrType[] = resAttrType.map((rat) => {
+    return {
+      id: rat.id,
+      name: rat.name,
+    }
+  });
+  return attrTypes;
+}
 
+function mapToVoices(resVoices: { name: string, read: string, address: string, attrIds: number[] }[]) {
+  const voices: Voice[] = resVoices.map((resVoice) => {
+    return {
+      address: resVoice.address,
+      attrIds: resVoice.attrIds,
+      name: resVoice.name,
+      kana: resVoice.read,
+    };
+  });
+  return voices;
+}
 
 export default App;
