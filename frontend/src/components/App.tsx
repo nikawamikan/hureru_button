@@ -121,7 +121,7 @@ function App() {
 
   useEffect(() => {
     // fetchVoiceList
-    const target = 'http://localhost/hurerubutton/api/voicelist';
+    const target = '/hurerubutton/api/voicelist';
     axios.get(target)
       .then((response) => {
         const fetchedVoiceList: VoiceListApiResponse = response.data;
@@ -187,33 +187,24 @@ function mapToAppState(res: VoiceListApiResponse) {
   return appState;
 }
 
-function mapToAttrTypes(resAttrType: { [key: string]: string }) {
-  const attrTypes: AttrType[] = [];
-  for (const property in resAttrType) {
-    try {
-      const id = Number(property);
-      const name = resAttrType[property];
-      const attrType: AttrType = {
-        id: id,
-        name: name,
-      };
-      attrTypes.push(attrType);
-    } catch {
-      continue;
+function mapToAttrTypes(resAttrType: { id: number, name: string }[]) {
+  const attrTypes: AttrType[] = resAttrType.map((rat) => {
+    return {
+      id: rat.id,
+      name: rat.name,
     }
-  }
+  });
   return attrTypes;
 }
 
 function mapToVoices(resVoices: { name: string, read: string, address: string, attrIds: number[] }[]) {
   const voices: Voice[] = resVoices.map((resVoice) => {
-    const voice: Voice = {
+    return {
       address: resVoice.address,
       attrIds: resVoice.attrIds,
       name: resVoice.name,
       kana: resVoice.read,
     };
-    return voice;
   });
   return voices;
 }

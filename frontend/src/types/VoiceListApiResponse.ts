@@ -1,6 +1,9 @@
 type VoiceListApiResponse = {
     prefix: string,
-    attrType: { [key: string]: string },
+    attrType: {
+        id: number,
+        name: string
+    }[],
     voices: {
         name: string,
         read: string,
