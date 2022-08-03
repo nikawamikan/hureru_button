@@ -31,6 +31,7 @@ services:
     volumes:
       - ./api/app:/go/src/app
       - ./voice:/go/src/app/voice
+      - ./yaml:/go/src/app/yaml
     tty: true
     command: go run main.go
 
@@ -61,9 +62,12 @@ services:
     ports:
       - 80:80
 
-      # とりあえず入れる音楽データを加工するようコンテナ
+# とりあえず入れる音楽データを加工するようコンテナ
   # voiceinserter:
   #   build: ./voiceinserter
+  #   environment:
+  #   - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}  # .envファイルに環境変数を設定
+  #   - MYSQL_DATABASE=hureru_voice
   #   volumes:
   #     - ./voice:/usr/src/app/voice
   #     - ./voiceinserter/src:/usr/src/app

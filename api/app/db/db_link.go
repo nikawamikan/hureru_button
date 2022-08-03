@@ -33,7 +33,7 @@ type Attr struct {
 }
 
 type AttrType struct {
-	ID       uint      `xorm:"id pk autoincr"`   // ID
+	ID       uint      `xorm:"id pk"`            // ID
 	Name     string    `xorm:"name varchar(20)"` // 属性の名前
 	DelFlg   bool      `xorm:"del_flg"`          // 削除フラグ
 	UpdateAt time.Time `xorm:"updated"`          // 日時
@@ -43,6 +43,10 @@ type LastUpdate struct {
 	ID       uint      `xorm:"id pk autoincr"`   // ID
 	Name     string    `xorm:"name varchar(20)"` // テーブル名とJson名
 	UpdateAt time.Time `xorm:"created"`          // 最終更新日
+}
+
+type DBType interface {
+	Voice | Attr | AttrType | LastUpdate
 }
 
 // 初期化用
@@ -64,13 +68,13 @@ func SetInit(password string, user string, address string, db string) {
 	engine := getEngine()
 
 	// 存在するテーブルすべて削除する
-	// allDropTables(*engine)
+	allDropTables(*engine)
 
 	// テーブルの作成
 	createTable(*engine)
 
 	// テスト用データの挿入
-	// insert(*engine)
+	// insertDebag(*engine)
 }
 
 // createTable テーブルを作成する
@@ -141,4 +145,8 @@ func getEngine() *xorm.Engine {
 		log.Fatal(err)
 	}
 	return engine
+}
+
+func Insert[T DBType](data []T) (int64, error) {
+	return getEngine().Insert(data)
 }
