@@ -6,6 +6,7 @@ package apis
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/labstack/echo/v4"
 	"hureru_button.com/hureru_button/db"
@@ -14,7 +15,7 @@ import (
 var PREFIX string
 
 func SetInit(prefix string) {
-	print(prefix)
+	fmt.Print(prefix)
 	PREFIX = "api/voice/"
 }
 
@@ -48,7 +49,11 @@ func voicelist(c echo.Context) error {
 // Voiceデータを送信する
 func getVoice(c echo.Context) error {
 	name := c.Param("name")
-	fmt.Print(name)
+	name, err := url.PathUnescape(name)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(name)
 	return c.File(fmt.Sprintf("./voice/%s", name))
 }
 
