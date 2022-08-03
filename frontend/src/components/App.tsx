@@ -35,7 +35,7 @@ const _voices: Voice[] = [
 
 // 初期データ
 const _state: AppState = {
-  baseAddress: '/mp3/marine',
+  baseAddress: '/hurerubutton/api/voice/marine',
   attrTypes: [
     { id: 0, name: '属性A' },
     { id: 1, name: '属性B' },
@@ -65,6 +65,15 @@ function App() {
   // handle functions
   function handleVoiceButtonClick(voice: Voice) {
     setSelectedVoice(voice);
+  }
+  function handleVoiceAudioEnded() {
+    console.log('ended');
+    setSelectedVoice({
+      address: '',
+      attrIds: [],
+      name: '',
+      kana: ''
+    });
   }
   function handleWordFilteringInputChange(word: string) {
     const newFilteringWords = word.replace(/\s+/, ' ').trim().split(' ');
@@ -153,6 +162,7 @@ function App() {
       <VoiceAudio
         baseAddress={baseAddress}
         voice={selectedVoice}
+        onended={handleVoiceAudioEnded}
       />
       <div>
         {filteredVoices.map((voice) => {
