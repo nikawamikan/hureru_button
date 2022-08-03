@@ -14,4 +14,4 @@ RUN go mod tidy
 RUN go get github.com/go-sql-driver/mysql
 RUN go get xorm.io/xorm
 RUN go get github.com/joho/godotenv
-RUN go mod download github.com/gorilla/mux
+RUN go get github.com/go-yaml/yaml

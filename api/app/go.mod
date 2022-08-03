@@ -9,6 +9,7 @@ require (
 )
 
 require (
+	github.com/go-yaml/yaml v2.1.0+incompatible // indirect
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect

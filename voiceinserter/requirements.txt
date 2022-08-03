@@ -1,0 +1,5 @@
+pyyaml
+requests
+joblib
+pykakasi
+mysqlclient

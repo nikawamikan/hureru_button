@@ -8,7 +8,7 @@ import (
 )
 
 // テストデータをテーブルに追加する
-func insert(engine xorm.Engine) {
+func insertDebag(engine xorm.Engine) {
 	attrTypes := make([]AttrType, 0)
 	voices := make([]Voice, 0)
 	attrs := make([]Attr, 0)
