@@ -14,7 +14,8 @@ import (
 var PREFIX string
 
 func SetInit(prefix string) {
-	PREFIX = prefix + "hurerubutton/api/voice/"
+	print(prefix)
+	PREFIX = "api/voice/"
 }
 
 type VoiceJson struct {
@@ -47,6 +48,7 @@ func voicelist(c echo.Context) error {
 // Voiceデータを送信する
 func getVoice(c echo.Context) error {
 	name := c.Param("name")
+	fmt.Print(name)
 	return c.File(fmt.Sprintf("./voice/%s", name))
 }
 
