@@ -1,3 +1,9 @@
+.wf-nikukyu { font-family: "Nikukyu"; }
+body { 
+  padding-top: 160px;
+  background-color: var(--antique-white);
+}
+
 :root {
   --cafe-noir: #573c27ff;
   --cafe-au-lait: #a98360ff;

@@ -7,7 +7,7 @@ type Props = {
 
 function VoiceButton(props: Props) {
     return (
-        <button className='btn btn-primary mb-1 me-1' data-bs-toggle='button' onClick={props.onclick}>{props.label}</button>
+        <button className='btn btn-primary mb-1 me-1' onClick={props.onclick}>{props.label}</button>
     );
 }
 

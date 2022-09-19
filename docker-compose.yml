@@ -13,6 +13,7 @@ services:
     restart: always
     environment:
       - NODE_ENV=${NODE_ENV}
+      - WDS_SOCKET_PORT=0
     volumes:
       - ./frontend:/home/node/app
     working_dir: /home/node/app
@@ -62,15 +63,14 @@ services:
     ports:
       - 80:80
 
-# とりあえず入れる音楽データを加工するようコンテナ
-  # voiceinserter:
-  #   build: ./voiceinserter
-  #   environment:
-  #   - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}  # .envファイルに環境変数を設定
-  #   - MYSQL_DATABASE=hureru_voice
-  #   volumes:
-  #     - ./voice:/usr/src/app/voice
-  #     - ./voiceinserter/src:/usr/src/app
-  #   # command: python3 main.py
-  #   tty: true
+# # とりあえず入れる音楽データを加工するようコンテナ
+#   voiceinserter:
+#     build: ./voiceinserter
+#     environment:
+#     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}  # .envファイルに環境変数を設定
+#     - MYSQL_DATABASE=hureru_voice
+#     volumes:
+#       - ./voice:/usr/src/app/voice
+#       - ./voiceinserter/src:/usr/src/app
+#     command: python3 main.py
   
