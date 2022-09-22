@@ -1,7 +1,19 @@
+.wf-nikukyu { font-family: "Nikukyu"; }
+
+.navbar-brand{
+  font-family: "Nikukyu";
+}
+
+body { 
+  padding-top: 160px;
+  background-color: var(--antique-white);
+}
+
 :root {
   --cafe-noir: #573c27ff;
   --cafe-au-lait: #a98360ff;
   --antique-white: #fdeed9ff;
+  --half-nadeshiko-pink: rgba(249, 153, 186, 0.74);
   --nadeshiko-pink: #f999baff;
   --nadefan-pink: #f17ba8ff;
   --fandango-pink: #e34989ff;
@@ -60,23 +72,24 @@
 
 /* btn-voice */
 .btn-voice {
+  border-radius: 40em;
   color: #fff;
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: var(--nadefan-pink);
+  border-color: var(--nadefan-pink);
 }
 
 .btn-voice:hover {
   color: #fff;
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
+  background-color: var(--fandango-pink);
+  border-color: var(--fandango-pink);
 }
 
 .btn-check:focus+.btn-voice,
 .btn-voice:focus {
   color: #fff;
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
-  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+  background-color: var(--nadefan-pink);
+  border-color: var(--nadefan-pink);
+  box-shadow: 0 0 0 0.25rem var(--half-nadeshiko-pink);
 }
 
 .btn-check:checked+.btn-voice,
@@ -85,8 +98,8 @@
 .btn-voice.active,
 .show>.btn-voice.dropdown-toggle {
   color: #fff;
-  background-color: #0a58ca;
-  border-color: #0a53be;
+  background-color: var(--nadefan-pink);
+  border-color: var(--nadefan-pink);
 }
 
 .btn-check:checked+.btn-voice:focus,
@@ -94,12 +107,12 @@
 .btn-voice:active:focus,
 .btn-voice.active:focus,
 .show>.btn-voice.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+  box-shadow: 0 0 0 0.25rem var(--half-nadeshiko-pink);
 }
 
 .btn-voice:disabled,
 .btn-voice.disabled {
   color: #fff;
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: var(--nadefan-pink);
+  border-color: var(--nadefan-pink);
 }

@@ -69,7 +69,7 @@ function App() {
   function handleVoiceAudioEnded() {
     console.log('ended');
     setSelectedVoice({
-      address: '',
+      address: 'static_audio_silence.wav',
       attrIds: [],
       name: '',
       kana: ''
@@ -151,28 +151,51 @@ function App() {
 
   // render
   return (
-    <div className='container p-4'>
-      <WordFiltering
-        onchange={(e) => handleWordFilteringInputChange(e.target.value)}
-      />
-      <AttrTypeFiltering
-        attrTypes={attrTypes}
-        onclick={handleAttrTypeFilteringButtonClick}
-      />
-      <VoiceAudio
-        baseAddress={baseAddress}
-        voice={selectedVoice}
-        onended={handleVoiceAudioEnded}
-      />
-      <div>
-        {filteredVoices.map((voice) => {
-          return (
-            <VoiceButton
-              onclick={() => handleVoiceButtonClick(voice)}
-              label={'ボタン: ' + voice.name}
-            />
-          );
-        })}
+
+    <div>
+
+      <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">ふれるボタン</a>
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item dropdown">
+                <div className="dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                  属性
+                </div>
+                <AttrTypeFiltering
+                  attrTypes={attrTypes}
+                  onclick={handleAttrTypeFilteringButtonClick}
+                />
+              </li>
+            </ul>
+
+        </div>
+        <div>
+          <WordFiltering
+                onchange={(e) => handleWordFilteringInputChange(e.target.value)}
+          />
+        </div>
+        <VoiceAudio
+          baseAddress={baseAddress}
+          voice={selectedVoice}
+          onended={handleVoiceAudioEnded}
+        />
+      </nav>
+      <div className='container p-4'>
+        <AttrTypeFiltering
+          attrTypes={attrTypes}
+          onclick={handleAttrTypeFilteringButtonClick}
+        />
+        <div className='d-flex justify-content-between flex-wrap'>
+          {filteredVoices.map((voice) => {
+            return (
+              <VoiceButton
+                onclick={() => handleVoiceButtonClick(voice)}
+                label={voice.name}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

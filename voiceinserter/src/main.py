@@ -4,7 +4,6 @@ import os
 import glob
 import re
 from pykakasi import kakasi
-import mysql.connector
 
 # ファイル全捜索
 
@@ -49,23 +48,24 @@ def yml_builder(dir):
     return sorted(d, key=lambda x: x["name"])
 
 
-# with open("voicelist.yml", "w", encoding="utf-8") as f:
-#     yaml.dump(yml_builder("./voice"), f, default_flow_style=False, allow_unicode=True)
-cnx = None
+with open("voicelist.yml", "w", encoding="utf-8") as f:
+    yaml.dump(yml_builder("./voice"), f,
+              default_flow_style=False, allow_unicode=True)
+# cnx = None
 
-try:
-    cnx = mysql.connector.connect(
-        charset="utf8mb4",
-        user="root",
-        password=os.getenv("MYSQL_ROOT_PASSWORD"),
-        host="hureru_button_db",
-        database=os.getenv("MYSQL_DATABASE"),
-        port='3306',
-    )
+# try:
+#     cnx = mysql.connector.connect(
+#         charset="utf8mb4",
+#         user="root",
+#         password=os.getenv("MYSQL_ROOT_PASSWORD"),
+#         host="hureru_button_db",
+#         database=os.getenv("MYSQL_DATABASE"),
+#         port='3306',
+#     )
 
 
-except Exception as e:
-    print(e)
-finally:
-    if cnx is not None and cnx.is_connected():
-        cnx.close()
+# except Exception as e:
+#     print(e)
+# finally:
+#     if cnx is not None and cnx.is_connected():
+#         cnx.close()

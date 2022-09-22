@@ -6,6 +6,21 @@ volumes:
 
 services:
 
+# Let's Encryptなやつ
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - '80:80'
+      - '443:443'
+    links:
+      - reverse-proxy
+    restart: always
+    environment:
+      DOMAINS: 'nikawarasbian.ddns.net -> http://reverse-proxy'
+      STAGE: 'production'
+      FORCE_RENEW: 'true'
+
+
 # フロントエンドさん
   hureru_button:
     image: node:16.16.0-alpine3.16
@@ -13,6 +28,7 @@ services:
     restart: always
     environment:
       - NODE_ENV=${NODE_ENV}
+      - WDS_SOCKET_PORT=0
     volumes:
       - ./frontend:/home/node/app
     working_dir: /home/node/app
@@ -59,18 +75,15 @@ services:
       - hureru_button
     volumes:
       - ./rev/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - 80:80
 
-# とりあえず入れる音楽データを加工するようコンテナ
-  # voiceinserter:
-  #   build: ./voiceinserter
-  #   environment:
-  #   - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}  # .envファイルに環境変数を設定
-  #   - MYSQL_DATABASE=hureru_voice
-  #   volumes:
-  #     - ./voice:/usr/src/app/voice
-  #     - ./voiceinserter/src:/usr/src/app
-  #   # command: python3 main.py
-  #   tty: true
+# # とりあえず入れる音楽データを加工するようコンテナ
+#   voiceinserter:
+#     build: ./voiceinserter
+#     environment:
+#     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}  # .envファイルに環境変数を設定
+#     - MYSQL_DATABASE=hureru_voice
+#     volumes:
+#       - ./voice:/usr/src/app/voice
+#       - ./voiceinserter/src:/usr/src/app
+#     command: python3 main.py
   
