@@ -153,6 +153,7 @@ function App() {
   return (
 
     <div>
+
       <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">ふれるボタン</a>
@@ -172,7 +173,7 @@ function App() {
         <div>
           <WordFiltering
                 onchange={(e) => handleWordFilteringInputChange(e.target.value)}
-              />
+          />
         </div>
         <VoiceAudio
           baseAddress={baseAddress}
@@ -185,7 +186,7 @@ function App() {
           attrTypes={attrTypes}
           onclick={handleAttrTypeFilteringButtonClick}
         />
-        <div>
+        <div className='d-flex justify-content-between flex-wrap'>
           {filteredVoices.map((voice) => {
             return (
               <VoiceButton
